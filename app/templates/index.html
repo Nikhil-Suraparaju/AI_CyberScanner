@@ -1,0 +1,45 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nessus Scan Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        label, input, select, button { display: block; margin-top: 1em; }
+        button { padding: 0.5em 1em; }
+        .error { color: red; margin-top: 1em; }
+    </style>
+</head>
+<body>
+    <h2>Nessus Essentials - Network Scan</h2>
+
+    <form method="post" action="/scan">
+        <label for="target">Target (IP/Hostname):</label>
+        <input type="text" name="target" id="target" required value="{{ target or '' }}">
+
+        <label for="scan_type">Scan Type:</label>
+        <select name="scan_type" id="scan_type">
+            <option value="basic" {% if scan_type == 'basic' %}selected{% endif %}>Basic Network Scan</option>
+        </select>
+
+        <button type="submit">Run Scan</button>
+    </form>
+
+    {% if scan_result %}
+    <hr>
+    <h3>Scan Results</h3>
+    <p><strong>Scan ID:</strong> {{ scan_result.scan_id }}</p>
+    <p><strong>Status:</strong> {{ scan_result.status }}</p>
+    <p><strong>Summary:</strong> {{ scan_result.result_summary }}</p>
+    {% endif %}
+
+    {% if error %}
+    <div class="error">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+</body>
+</html>
